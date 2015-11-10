@@ -1,4 +1,5 @@
 require "net/http"
+require "nokogiri"
 
 # http://query.yahooapis.com/v1/public/yql?q=select * from geo.places where text="sunnyvale, ca"
 
@@ -8,4 +9,7 @@ url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.fin
 resp = Net::HTTP.get_response(URI.parse(url))
 resp_text = resp.body
 
-puts resp_text
+# puts resp_text
+
+xml_doc = Nokogiri::XML(resp_text)
+
