@@ -1,15 +1,23 @@
 require "net/http"
 require "nokogiri"
+require "cgi"
 
 # http://query.yahooapis.com/v1/public/yql?q=select * from geo.places where text="sunnyvale, ca"
 
 # url = "http://query.yahooapis.com/v1/public/yql?q=select * from geo.places where text=\"sunnyvale, ca\""
 
-url = "https://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.historicaldata%20where%20symbol%20%3D%20%22YHOO%22%20and%20startDate%20%3D%20%222009-09-11%22%20and%20endDate%20%3D%20%222010-03-10%22&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
-resp = Net::HTTP.get_response(URI.parse(url))
-resp_text = resp.body
+base_url = "https://query.yahooapis.com/v1/public/yql?q="
+url_end = "&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
 
-# puts resp_text
+ticker = "YHOO"
+start_date = "2009-09-11"
+end_date = "2009-10-11"
+
+query = CGI.escape("select * from yahoo.finance.historicaldata where symbol = \"#{ticker}\" and startDate = \"#{start_date}\" and endDate = \"#{end_date}\"")
+complete_url = "#{base_url}#{query}#{url_end}"
+
+resp = Net::HTTP.get_response(URI.parse(complete_url))
+resp_text = resp.body
 
 xml_doc = Nokogiri::XML(resp_text)
 
