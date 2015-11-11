@@ -1,13 +1,12 @@
 require "net/http"
-require "nokogiri"
 require "cgi"
+require "json"
 
 # http://query.yahooapis.com/v1/public/yql?q=select * from geo.places where text="sunnyvale, ca"
-
 # url = "http://query.yahooapis.com/v1/public/yql?q=select * from geo.places where text=\"sunnyvale, ca\""
 
 base_url = "https://query.yahooapis.com/v1/public/yql?q="
-url_end = "&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+url_end = "&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json"
 
 ticker = "YHOO"
 start_date = "2009-09-11"
@@ -19,6 +18,6 @@ complete_url = "#{base_url}#{query}#{url_end}"
 resp = Net::HTTP.get_response(URI.parse(complete_url))
 resp_text = resp.body
 
-xml_doc = Nokogiri::XML(resp_text)
+json = JSON.parse(resp_text)
 
-puts xml_doc
+puts JSON.pretty_generate(json)
