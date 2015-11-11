@@ -8,7 +8,7 @@ require "json"
 base_url = "https://query.yahooapis.com/v1/public/yql?q="
 url_end = "&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&format=json"
 
-ticker = "YHOO"
+ticker = "ABB.ST"
 start_date = "2009-09-11"
 end_date = "2009-10-11"
 
@@ -20,4 +20,9 @@ resp_text = resp.body
 
 json = JSON.parse(resp_text)
 
-puts JSON.pretty_generate(json)
+# puts JSON.pretty_generate(json)
+
+json["query"]["results"]["quote"].each do |item|
+    puts "Date: #{item["Date"]}"
+    puts "Close: #{item["Close"]}"
+end
