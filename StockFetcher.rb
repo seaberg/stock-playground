@@ -28,8 +28,6 @@ class StockFetcher
                             :Adj_Close => item["Adj_Close"]
             }
             stock_prices << stock_price
-            # puts "Date: #{item["Date"]}"
-            # puts "Close: #{item["Close"]}"
         end
         return stock_prices
     end
