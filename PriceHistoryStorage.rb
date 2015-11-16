@@ -13,9 +13,13 @@ class PriceHistoryStorage
     def retrieve_price_history(symbol)
         file_name = "price_history/#{symbol}"
         
-        serialized = File.read(file_name)
-        price_history = YAML::load(serialized)
-        
-        puts price_history
+        begin
+            serialized = File.read(file_name)
+            price_history = YAML::load(serialized)
+            
+            # TODO: Make sure the price history is correctly sorted before returning it
+        rescue
+            return 0
+        end
     end
 end
