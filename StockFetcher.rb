@@ -17,7 +17,11 @@ class StockFetcher
        
         stock_prices = []
         
-        if json["query"]["count"] > 0
+        # Debug
+        # puts json["query"]["count"]
+        # puts json["query"]["results"]["quote"]
+        
+        if json["query"]["count"].to_i > 0
             json["query"]["results"]["quote"].each do |item|
                 stock_price = { :Symbol => item["Symbol"],
                                 :Date => item["Date"],

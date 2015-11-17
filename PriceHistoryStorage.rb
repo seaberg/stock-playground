@@ -1,4 +1,5 @@
 require "yaml" 
+require "date"
 
 class PriceHistoryStorage
     def store_price_history(price_history)
@@ -21,9 +22,21 @@ class PriceHistoryStorage
             serialized = File.read(file_name)
             price_history = YAML::load(serialized)
             
+            # Convert to proper types
+            price_history.each do |ph|
+                ph[:Date] = Date.parse(ph[:Date])
+                ph[:Open] = ph[:Open].to_f
+                ph[:High] = ph[:High].to_f
+                ph[:Low] = ph[:Low].to_f
+                ph[:Close] = ph[:Close].to_f
+                ph[:Volume] = ph[:Volume].to_i
+                ph[:Adj_Close] = ph[:Adj_Close].to_f
+            end
+            
             # TODO: Make sure the price history is correctly sorted before returning it
+            price_history = price_history.sort_by { |ph| ph[:Date] }.reverse!
         rescue
-            return 0
+            return nil
         end
     end
 end
