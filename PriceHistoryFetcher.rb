@@ -3,7 +3,7 @@ require_relative "PriceHistoryStorage"
 require_relative "StockFetcher"
 
 # Fetch symbol history for x days back
-history_length = 365
+history_length = 30
 # 1. Loop over list of symbols to retrieve prices for
 stockholm_large_cap_symbols = ["AAK.ST", "ABB.ST", "AOI.ST", "ALFA.ST", "ASSA-B.ST", "AZN.ST", "ATCO-B.ST"]
 

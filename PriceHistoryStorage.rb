@@ -2,10 +2,14 @@ require "yaml"
 
 class PriceHistoryStorage
     def store_price_history(price_history)
-        serialized = YAML::dump(price_history)
+        if price_history == nil # Nothing to store
+            return
+        end
         
         symbol = price_history[0][:Symbol]
         file_name = "price_history/#{symbol}"
+        
+        serialized = YAML::dump(price_history)
         
         File.open(file_name, 'w') { |file| file.write(serialized) }
     end

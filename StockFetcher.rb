@@ -16,19 +16,21 @@ class StockFetcher
         json = JSON.parse(resp_text)
        
         stock_prices = []
- 
-        json["query"]["results"]["quote"].each do |item|
-            stock_price = { :Symbol => item["Symbol"],
-                            :Date => item["Date"],
-                            :Open => item["Open"],
-                            :High => item["High"],
-                            :Low => item["Low"],
-                            :Close => item["Close"],
-                            :Volume => item["Volume"],
-                            :Adj_Close => item["Adj_Close"]
-            }
-            stock_prices << stock_price
-        end
+        
+        if json["query"]["count"] > 0
+            json["query"]["results"]["quote"].each do |item|
+                stock_price = { :Symbol => item["Symbol"],
+                                :Date => item["Date"],
+                                :Open => item["Open"],
+                                :High => item["High"],
+                                :Low => item["Low"],
+                                :Close => item["Close"],
+                                :Volume => item["Volume"],
+                                :Adj_Close => item["Adj_Close"]
+                }
+                stock_prices << stock_price
+            end
         return stock_prices
+        end
     end
 end
