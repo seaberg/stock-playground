@@ -16,12 +16,25 @@ class StockFetcher
         json = JSON.parse(resp_text)
        
         stock_prices = []
-        
-        # Debug
-        # puts json["query"]["count"]
-        # puts json["query"]["results"]["quote"]
-        
-        if json["query"]["count"].to_i > 0
+        if json["query"]["count"].to_i == 0
+            # No prices found, nothing to do
+            return 
+        elsif json["query"]["count"].to_i == 1
+                single_item = json["query"]["results"]["quote"]
+                stock_price = { :Symbol => single_item["Symbol"],
+                                :Date => single_item["Date"],
+                                :Open => single_item["Open"],
+                                :High => single_item["High"],
+                                :Low => single_item["Low"],
+                                :Close => single_item["Close"],
+                                :Volume => single_item["Volume"],
+                                :Adj_Close => single_item["Adj_Close"]
+                }
+                # The problem with adding these two is probably that the
+                # new_price_history does not have correct data types.
+                stock_prices << single_item
+        else 
+            # More than 1 item
             json["query"]["results"]["quote"].each do |item|
                 stock_price = { :Symbol => item["Symbol"],
                                 :Date => item["Date"],

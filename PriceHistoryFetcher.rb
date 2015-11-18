@@ -32,7 +32,9 @@ stockholm_large_cap_symbols.each do |symbol|
             # If we found any new prices, insert them into the storage
             if new_price_history != nil
                 # Debug
+                puts "new_price_history"
                 puts new_price_history
+                puts "price_history"
                 puts price_history
                 
                 price_history << new_price_history
