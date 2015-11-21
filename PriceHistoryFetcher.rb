@@ -5,7 +5,7 @@ require_relative "StockFetcher"
 # Fetch symbol history for x days back
 history_length = 30
 
-stockholm_large_cap_symbols = ["AAK.ST", "ABB.ST", "AOI.ST", "ALFA.ST", "ASSA-B.ST", "AZN.ST", "ATCO-B.ST"]
+stockholm_large_cap_symbols = ["^OMX", "AAK.ST", "ABB.ST", "AOI.ST", "ALFA.ST", "ASSA-B.ST", "AZN.ST", "ATCO-B.ST"]
 
 price_history_storage = PriceHistoryStorage.new
 stock_fetcher = StockFetcher.new
