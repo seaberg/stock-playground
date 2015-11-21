@@ -1,6 +1,7 @@
 require "net/http"
 require "cgi"
 require "json"
+require "date"
 
 class StockFetcher
     def fetch_price(symbol, start_date, end_date)
@@ -16,38 +17,34 @@ class StockFetcher
         json = JSON.parse(resp_text)
        
         stock_prices = []
+        
         if json["query"]["count"].to_i == 0
             # No prices found, nothing to do
             return 
         elsif json["query"]["count"].to_i == 1
                 single_item = json["query"]["results"]["quote"]
-                stock_price = { :Symbol => single_item["Symbol"],
-                                :Date => single_item["Date"],
-                                :Open => single_item["Open"],
-                                :High => single_item["High"],
-                                :Low => single_item["Low"],
-                                :Close => single_item["Close"],
-                                :Volume => single_item["Volume"],
-                                :Adj_Close => single_item["Adj_Close"]
-                }
-                # The problem with adding these two is probably that the
-                # new_price_history does not have correct data types.
-                stock_prices << single_item
+                stock_price = extract_stock_price(single_item)
+                stock_prices << stock_price
         else 
             # More than 1 item
             json["query"]["results"]["quote"].each do |item|
-                stock_price = { :Symbol => item["Symbol"],
-                                :Date => item["Date"],
-                                :Open => item["Open"],
-                                :High => item["High"],
-                                :Low => item["Low"],
-                                :Close => item["Close"],
-                                :Volume => item["Volume"],
-                                :Adj_Close => item["Adj_Close"]
-                }
+                stock_price = extract_stock_price(item)
                 stock_prices << stock_price
             end
         return stock_prices
         end
+    end
+    
+    def extract_stock_price(item)
+        stock_price = { :Symbol => item["Symbol"],
+                        :Date => Date.parse(item["Date"]),
+                        :Open => item["Open"].to_f,
+                        :High => item["High"].to_f,
+                        :Low => item["Low"].to_f,
+                        :Close => item["Close"].to_f,
+                        :Volume => item["Volume"].to_f,
+                        :Adj_Close => item["Adj_Close"].to_f
+        }
+        return stock_price
     end
 end

@@ -21,26 +21,27 @@ stockholm_large_cap_symbols.each do |symbol|
         
         price_history = stock_fetcher.fetch_price(symbol, start_date, end_date)
         price_history_storage.store_price_history(price_history)
-    else # We have historical prices, retrieve new data
-        if Date.today > price_history[0][:Date]
-            # Fetch data from last stored value until today
-            start_date = price_history[0][:Date] + 1
-            end_date = Date.today
+        
+    # else # We have historical prices, retrieve new data
+    #     if Date.today > price_history[0][:Date]
+    #         # Fetch data from last stored value until today
+    #         start_date = price_history[0][:Date] + 1
+    #         end_date = Date.today
             
-            new_price_history = stock_fetcher.fetch_price(symbol, start_date, end_date)
+    #         new_price_history = stock_fetcher.fetch_price(symbol, start_date, end_date)
             
-            # If we found any new prices, insert them into the storage
-            if new_price_history != nil
-                # Debug
-                puts "new_price_history"
-                puts new_price_history
-                puts "price_history"
-                puts price_history
+    #         # If we found any new prices, insert them into the storage
+    #         if new_price_history != nil
+    #             # Debug
+    #             puts "new_price_history"
+    #             puts new_price_history
+    #             puts "price_history"
+    #             puts price_history
                 
-                price_history << new_price_history
-                price_history_storage = PriceHistoryStorage.new
-                price_history_storage.store_price_history(price_history)
-            end
-        end
+    #             price_history << new_price_history
+    #             price_history_storage = PriceHistoryStorage.new
+    #             price_history_storage.store_price_history(price_history)
+    #         end
+    #     end
     end
 end
